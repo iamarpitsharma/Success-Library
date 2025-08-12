@@ -1,12 +1,14 @@
 import React from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
 import AdminLogin from './components/AdminLogin';
 import AdminDashboard from './components/AdminDashboard';
 import AddMember from './components/AddMember';
 import ViewMembers from './components/ViewMembers';
-import AdminSidebar from './components/AdminSidebar';
+import Payments from './components/Payments';
+import SeatManagement from './components/SeatManagement';
 
-// Protected Route Component with Sidebar Layout
+// Protected Route Component
 const ProtectedRoute = ({ children }) => {
   const adminToken = localStorage.getItem('adminToken');
   
@@ -14,31 +16,36 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/admin/login" replace />;
   }
   
-  return (
-    <div className="flex h-screen bg-gray-100">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {children}
-      </div>
-    </div>
-  );
-};
-
-// Layout Component for pages that need the sidebar
-const AdminLayout = ({ children }) => {
-  return (
-    <div className="flex h-screen bg-gray-100">
-      <AdminSidebar />
-      <div className="flex-1 flex flex-col overflow-hidden">
-        {children}
-      </div>
-    </div>
-  );
+  return children;
 };
 
 function App() {
   return (
     <div className="App">
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 4000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+          success: {
+            duration: 3000,
+            iconTheme: {
+              primary: '#10B981',
+              secondary: '#fff',
+            },
+          },
+          error: {
+            duration: 4000,
+            iconTheme: {
+              primary: '#EF4444',
+              secondary: '#fff',
+            },
+          },
+        }}
+      />
       <Routes>
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route 
@@ -62,6 +69,22 @@ function App() {
           element={
             <ProtectedRoute>
               <ViewMembers />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/payments" 
+          element={
+            <ProtectedRoute>
+              <Payments />
+            </ProtectedRoute>
+          } 
+        />
+        <Route 
+          path="/admin/seats" 
+          element={
+            <ProtectedRoute>
+              <SeatManagement />
             </ProtectedRoute>
           } 
         />

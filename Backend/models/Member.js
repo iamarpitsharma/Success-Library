@@ -8,11 +8,13 @@ const memberSchema = new mongoose.Schema({
   address: { type: String, required: true, maxLength: 50 },
   gender: { type: String, required: true, enum: ['Male', 'Female'] },
   shift: { type: String, required: true },
+  customStartTime: { type: String, default: null },
+  customEndTime: { type: String, default: null },
   timing: { type: String, required: true },
-  monthlyFees: { type: Number, required: true },
+  monthlyFees: { type: Number, required: false },
   joiningDate: { type: Date, default: Date.now },
   feesPaidTill: { type: Date },
-  paymentMode: { type: String, required: true },
+  paymentMode: { type: String, required: false },
   profilePicture: { type: String }, // URL to the uploaded image
   seat: { type: String },
 }, { timestamps: true });

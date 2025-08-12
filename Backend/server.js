@@ -18,6 +18,9 @@ mongoose.connect(process.env.MONGO_URI)
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/members', require('./routes/members'));
 app.use('/api/admin', require('./routes/admin'));
+app.use('/api/payments', require('./routes/payments'));
+app.use('/api/seats', require('./routes/seats'));
+app.use('/api/whatsapp', require('./routes/whatsapp'));
 
 // Root route
 app.get('/', (req, res) => {

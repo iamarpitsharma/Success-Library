@@ -1,46 +1,45 @@
 require('dotenv').config();
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const Admin = require('../models/Admin');
+const bcrypt = require('bcryptjs'); // safer on Windows
+const Admin = require("../models/Admin"); // adjust path if needed
 
-// MongoDB connection
-mongoose.connect(process.env.MONGO_URI)
-  .then(() => console.log('MongoDB connected for admin creation'))
-  .catch((err) => console.error('MongoDB connection error:', err));
-
-const createDefaultAdmin = async () => {
+async function createAdmin() {
   try {
-    // Check if admin already exists
-    const existingAdmin = await Admin.findOne({ email: 'admin@library.com' });
-    
+    // Make sure MONGO_URI exists
+    if (!process.env.MONGO_URI) {
+      throw new Error('❌ MONGO_URI is not set in .env');
+    }
+
+    await mongoose.connect(process.env.MONGO_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true
+    });
+
+    const existingAdmin = await Admin.findOne({ email: 'admin@successlibrary.com' });
     if (existingAdmin) {
-      console.log('Admin user already exists');
+      console.log('⚠️ Admin user already exists.');
       process.exit(0);
     }
 
-    // Create hashed password
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash('admin123', salt);
+    const hashedPassword = await bcrypt.hash('success@276205', 10);
 
-    // Create admin user
     const admin = new Admin({
-      name: 'Library Administrator',
-      email: 'admin@library.com',
+      name: 'Devbrat',
+      email: 'admin@successlibrary.com',
       password: hashedPassword,
       role: 'admin',
-      isActive: true,
+      isActive: true
     });
 
     await admin.save();
-    console.log('Default admin user created successfully!');
-    console.log('Email: admin@library.com');
-    console.log('Password: admin123');
-    
+    console.log('✅ Admin user created successfully!');
+    console.log('📧 Email: admin@successlibrary.com');
+    console.log('🔑 Password: success@276205');
+    process.exit(0);
   } catch (err) {
-    console.error('Error creating admin:', err.message);
-  } finally {
-    mongoose.connection.close();
+    console.error('❌ Error creating admin:', err);
+    process.exit(1);
   }
-};
+}
 
-createDefaultAdmin(); 
+createAdmin();
