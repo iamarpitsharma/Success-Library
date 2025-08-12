@@ -1,0 +1,12 @@
+{
+  "rewrites": [
+    { "source": "/admin/login", "destination": "/" },
+    { "source": "/admin/dashboard", "destination": "/" },
+    { "source": "/admin/add-member", "destination": "/" },
+    { "source": "/admin/members", "destination": "/" },
+    { "source": "/admin/payments", "destination": "/" },
+    { "source": "/admin/seats", "destination": "/" },
+    { "source": "/", "destination": "/" },
+    { "source": "/(.*)", "destination": "/" }
+  ]
+}
